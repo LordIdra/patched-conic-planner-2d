@@ -1,0 +1,29 @@
+[package]
+name = "conic-planner"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rand = "0.8.5"
+nalgebra-glm = "0.18.0"
+serde = "1.0.195"
+serde_json = "1.0"
+clap = { version = "4.4.16", features = ["derive"] }
+
+[dependencies.eframe]
+version = "0.23"
+
+[profile.dev]
+opt-level=1
+debug=2
+incremental=true
+
+[profile.bench]
+opt-level=3
+debug=2
+incremental=true
+
+[profile.release]
+opt-level=3
+debug=0
+incremental=true
