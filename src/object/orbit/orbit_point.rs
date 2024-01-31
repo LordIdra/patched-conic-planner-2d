@@ -1,5 +1,7 @@
 use nalgebra_glm::DVec2;
 
+use crate::util::format_time;
+
 use super::conic::Conic;
 
 #[derive(Debug, Clone)]
@@ -15,6 +17,7 @@ impl OrbitPoint {
     pub fn new(conic: &dyn Conic, position: DVec2, time: f64) -> Self {
         let theta = f64::atan2(position.y, position.x);
         let time_since_periapsis = conic.get_time_since_last_periapsis(theta);
+        println!("{}", format_time(time_since_periapsis));
         let velocity = conic.get_velocity(position, theta);
         Self { theta, time, time_since_periapsis, position, velocity }
     }

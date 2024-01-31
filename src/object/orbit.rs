@@ -2,6 +2,8 @@ use std::{f64::consts::PI, rc::Rc, cell::RefCell};
 
 use nalgebra_glm::DVec2;
 
+use crate::util::format_time;
+
 use self::{orbit_point::OrbitPoint, orbit_direction::OrbitDirection, conic::{Conic, new_conic}, conic_type::ConicType};
 
 use super::Object;
@@ -41,32 +43,18 @@ impl Orbit {
         &self.end_point
     }
 
+    //TODO - add this to main project
     pub fn get_remaining_angle(&self) -> f64 {
         // If we have any full orbits remaining, only return up to 2pi
         if self.get_remaining_orbits() > 0 {
             return 2.0 * PI;
         }
 
-        let mut adjusted_end_theta = self.end_point.get_theta() % (2.0 * PI);
-        if adjusted_end_theta < 0.0 {
-            adjusted_end_theta += 2.0 * PI;
-        }
-        let mut adjusted_current_theta = self.current_point.get_theta() % (2.0 * PI);
-        if adjusted_current_theta < 0.0 {
-            adjusted_current_theta += 2.0 * PI;
-        }
-
-        let mut remaining_angle = adjusted_end_theta - adjusted_current_theta;
-        if let OrbitDirection::Clockwise = self.conic.get_direction() {
-            if remaining_angle > 0.0 {
-                remaining_angle -= 2.0 * PI
-            }
-            remaining_angle
+        let difference = self.end_point.get_theta() - self.current_point.get_theta();
+        if let OrbitDirection::AntiClockwise = self.conic.get_direction() {
+            difference
         } else {
-            if remaining_angle < 0.0 {
-                remaining_angle += 2.0 * PI
-            }
-            remaining_angle
+            -difference
         }
     }
 
@@ -153,6 +141,11 @@ impl Orbit {
 
     pub fn end_at(&mut self, time: f64) {
         let theta = self.get_theta_from_time(time);
+        if self.get_parent().borrow().get_name().as_str() == "earth" {
+            println!("{}", format_time(time));
+            println!("{}", self.conic.get_theta_from_time_since_periapsis(0000.0));
+            println!();
+        }
         let position = self.conic.get_position(theta);
         self.end_point = OrbitPoint::new(&*self.conic, position, time);
     }

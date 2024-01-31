@@ -63,9 +63,7 @@ impl State {
             .clone();
         Self { time, last_frame_time, zoom, speed, focus, objects }
     }
-}
 
-impl State {
     fn draw_orbits(&self, screen_rect: Rect) -> Vec<Shape> {
         let translation = dvec2_to_pos2(self.focus.borrow().get_absolute_position());
         let mut lines: Vec<Shape> = Vec::new();
@@ -75,15 +73,15 @@ impl State {
             let mut color_index = 0;
             if let Some(orbits) = object.borrow().get_orbits() {
                 for orbit in orbits {
+                    let parent_position = orbit.get_parent().borrow().get_absolute_position();
                     let end_angle = orbit.get_end_point().get_theta();
                     let remaining_angle = orbit.get_remaining_angle();
-                    println!("{}", remaining_angle);
                     let mut last_angle = end_angle;
                     for i in 0..=LINES_PER_ORBIT {
                         let angle_fraction = i as f64 / LINES_PER_ORBIT as f64;
                         let angle = end_angle - angle_fraction*remaining_angle;
-                        let from = dvec2_to_pos2(orbit.get_position_from_theta(last_angle));
-                        let to = dvec2_to_pos2(orbit.get_position_from_theta(angle));
+                        let from = dvec2_to_pos2(parent_position + orbit.get_position_from_theta(last_angle));
+                        let to = dvec2_to_pos2(parent_position + orbit.get_position_from_theta(angle));
                         lines.push(line(&to_screen, [from, to], colors[color_index], LINE_WIDTH));
                         last_angle = angle;
                     }

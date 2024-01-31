@@ -20,5 +20,5 @@ fn main() -> Result<(), eframe::Error> {
         ..Default::default()
     };
     
-    run_native("Transfer Window", options, Box::new(create_app))
+    run_native("Conic Planner", options, Box::new(create_app))
 }

@@ -46,7 +46,7 @@ impl Object {
     pub fn get_absolute_position(&self) -> DVec2 {
         match &self.physics_type {
             PhysicsType::Stationary(position) => position.clone(),
-            PhysicsType::Orbit(orbits) => orbits.front().unwrap().get_current_point().get_position(),
+            PhysicsType::Orbit(orbits) => orbits.front().unwrap().get_parent().borrow().get_absolute_position() + orbits.front().unwrap().get_current_point().get_position(),
         }
     }
 
