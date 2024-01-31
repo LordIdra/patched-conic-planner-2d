@@ -1,5 +1,5 @@
 {
-    "object_data_map": {
+    "objects": {
         "sun": {
             "mass": 1.989e30,
             "position": [0.0, 0.0]
@@ -22,5 +22,14 @@
             "velocity": [0.0, 0.989e4],
             "parent_name": "earth"
         }
-    }
+    },
+
+    "encounters": [
+        {
+            "encounter_type": "Enter",
+            "object": "spacecraft",
+            "new_parent": "moon",
+            "time": 479843
+        }
+    ]
 }

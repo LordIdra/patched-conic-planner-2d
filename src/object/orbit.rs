@@ -2,7 +2,7 @@ use std::{f64::consts::PI, rc::Rc, cell::RefCell};
 
 use nalgebra_glm::DVec2;
 
-use crate::util::format_time;
+use crate::util::normalize_angle;
 
 use self::{orbit_point::OrbitPoint, orbit_direction::OrbitDirection, conic::{Conic, new_conic}, conic_type::ConicType};
 
@@ -50,12 +50,18 @@ impl Orbit {
             return 2.0 * PI;
         }
 
-        let difference = self.end_point.get_theta() - self.current_point.get_theta();
+        let mut end_theta = normalize_angle(self.end_point.get_theta());
+        let current_theta = normalize_angle(self.current_point.get_theta());
         if let OrbitDirection::AntiClockwise = self.conic.get_direction() {
-            difference
+            if end_theta < current_theta {
+                end_theta += 2.0 * PI;
+            }
         } else {
-            -difference
+            if end_theta > current_theta {
+                end_theta -= 2.0 * PI;
+            }
         }
+        end_theta - current_theta
     }
 
     pub fn get_remaining_orbits(&self) -> i32 {
@@ -141,12 +147,7 @@ impl Orbit {
 
     pub fn end_at(&mut self, time: f64) {
         let theta = self.get_theta_from_time(time);
-        if self.get_parent().borrow().get_name().as_str() == "earth" {
-            println!("{}", format_time(time));
-            println!("{}", self.conic.get_theta_from_time_since_periapsis(0000.0));
-            println!();
-        }
-        let position = self.conic.get_position(theta);
+        let position = self.get_position_from_theta(theta);
         self.end_point = OrbitPoint::new(&*self.conic, position, time);
     }
 

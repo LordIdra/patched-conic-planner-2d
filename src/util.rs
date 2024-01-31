@@ -1,3 +1,5 @@
+use std::f64::consts::PI;
+
 pub fn format_time(time: f64) -> String {
     let start_string = if time.is_sign_positive() { "".to_string() } else { "-".to_string() };
     let time = time.abs();
@@ -35,4 +37,9 @@ pub fn format_time(time: f64) -> String {
         start_string
             + seconds.to_string().as_str() + "s"
     }
+}
+
+pub fn normalize_angle(mut theta: f64) -> f64 {
+    theta = theta % (2.0 * PI);
+    (theta + 2.0 * PI) % (2.0 * PI)
 }
