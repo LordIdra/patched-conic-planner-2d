@@ -1,11 +1,11 @@
 use std::{collections::HashMap, cell::RefCell, rc::Rc, fs};
 
 use nalgebra_glm::DVec2;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{object::Object, solver::Encounter};
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 struct ObjectData {
     mass: f64,
     position: [f64; 2],
@@ -31,8 +31,10 @@ impl ObjectData {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 pub struct CaseData {
+    end_time: f64,
+    time_step: f64,
     objects: HashMap<String, ObjectData>,
     encounters: Vec<Encounter>,
 }

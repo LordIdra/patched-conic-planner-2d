@@ -43,10 +43,29 @@ impl Object {
         self.mass
     }
 
+    pub fn get_parent(&self) -> Option<Rc<RefCell<Object>>> {
+        match &self.physics_type {
+            PhysicsType::Stationary(position) => None,
+            PhysicsType::Orbit(orbits) => Some(orbits.front().unwrap().get_parent()),
+        }
+    }
+
+    pub fn get_soi(&self) -> Option<f64> {
+        let orbit = self.get_orbits()?.front().unwrap();
+        Some(orbit.get_semi_major_axis() * (self.mass / orbit.get_parent().borrow().get_mass()).powf(2.0 / 5.0))
+    }
+
+    pub fn get_position(&self) -> DVec2 {
+        match &self.physics_type {
+            PhysicsType::Stationary(position) => position.clone(),
+            PhysicsType::Orbit(orbits) => orbits.front().unwrap().get_current_point().get_position(),
+        }
+    }
+
     pub fn get_absolute_position(&self) -> DVec2 {
         match &self.physics_type {
             PhysicsType::Stationary(position) => position.clone(),
-            PhysicsType::Orbit(orbits) => orbits.front().unwrap().get_parent().borrow().get_absolute_position() + orbits.front().unwrap().get_current_point().get_position(),
+            PhysicsType::Orbit(orbits) => self.get_parent().unwrap().borrow().get_absolute_position() + self.get_position(),
         }
     }
 

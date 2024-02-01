@@ -1,4 +1,6 @@
 {
+    "end_time": 6000000.0,
+    "time_step": 40.0,
     "objects": {
         "sun": {
             "mass": 1.989e30,
