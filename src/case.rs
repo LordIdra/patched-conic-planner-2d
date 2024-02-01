@@ -3,7 +3,7 @@ use std::{collections::HashMap, cell::RefCell, rc::Rc, fs};
 use nalgebra_glm::DVec2;
 use serde::Deserialize;
 
-use crate::object::Object;
+use crate::{object::Object, solver::Encounter};
 
 #[derive(Deserialize)]
 struct ObjectData {
@@ -11,20 +11,6 @@ struct ObjectData {
     position: [f64; 2],
     velocity: Option<[f64; 2]>,
     parent_name: Option<String>,
-}
-
-#[derive(Deserialize)]
-enum EncounterType {
-    Enter,
-    Exit,
-}
-
-#[derive(Deserialize)]
-struct Encounter {
-    encounter_type: EncounterType,
-    object: String,
-    new_parent: String,
-    time: f64,
 }
 
 impl ObjectData {
@@ -46,13 +32,13 @@ impl ObjectData {
 }
 
 #[derive(Deserialize)]
-struct CaseData {
+pub struct CaseData {
     objects: HashMap<String, ObjectData>,
     encounters: Vec<Encounter>,
 }
 
 impl CaseData {
-    fn get_objects(self) -> Vec<Rc<RefCell<Object>>> {
+    pub fn get_objects(&self) -> Vec<Rc<RefCell<Object>>> {
         let mut real_objects: HashMap<String, Rc<RefCell<Object>>> = HashMap::new();
         while real_objects.len() != self.objects.len() {
             for (name, object) in &self.objects {
@@ -74,9 +60,8 @@ impl CaseData {
     }
 }
 
-pub fn load_objects(name: String) -> Vec<Rc<RefCell<Object>>> {
+pub fn load_case_data(name: String) -> CaseData {
     let file = fs::read_to_string("cases/".to_string() + name.as_str() + ".json").expect(format!("Failed to load test case {}", name).as_str());
-    let case_data: CaseData = serde_json::from_str(file.as_str()).expect(format!("Failed to deserialize test case {}", name).as_str());
-    case_data.get_objects()
+    serde_json::from_str(file.as_str()).expect(format!("Failed to deserialize test case {}", name).as_str())
 }
 

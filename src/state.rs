@@ -4,11 +4,7 @@ use clap::Parser;
 use eframe::{CreationContext, egui::{Context, CentralPanel, Painter, Key}, Frame, epaint::{Shape, Pos2, Color32, Rect, pos2}, emath::RectTransform};
 use nalgebra_glm::DVec2;
 
-use crate::{case::load_objects, object::Object, util::format_time};
-
-const LINES_PER_ORBIT: usize = 100;
-const LINE_WIDTH: f32 = 1.0;
-pub const SIMULATION_END_TIME: f64 = 6.0e6;
+use crate::{case::load_case_data, object::Object, util::format_time};
 
 fn dvec2_to_pos2(x: DVec2) -> Pos2 {
     // the simulation takes y as up, but the painter takes y as dwown (lol)
@@ -56,7 +52,8 @@ impl State {
         let zoom = 1.0e-12;
         let speed = 1.0;
         let args = Args::parse();
-        let objects = load_objects(args.name);
+        let case_data = load_case_data(args.name);
+        let objects = case_data.get_objects();
         let focus = objects.iter()
             .find(|object| object.borrow().get_name() == args.focus)
             .expect("Object to focus does not exist")

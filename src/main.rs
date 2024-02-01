@@ -6,6 +6,7 @@ use state::State;
 mod case;
 mod constants;
 mod object;
+mod solver;
 mod state;
 mod util;
 

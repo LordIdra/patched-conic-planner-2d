@@ -2,7 +2,7 @@ use std::{cell::RefCell, rc::Rc, collections::VecDeque};
 
 use nalgebra_glm::DVec2;
 
-use crate::state::SIMULATION_END_TIME;
+use crate::constants::SIMULATION_END_TIME;
 
 use self::orbit::Orbit;
 
