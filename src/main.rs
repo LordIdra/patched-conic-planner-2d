@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use eframe::{NativeOptions, Renderer, run_native, CreationContext};
 use state::State;
 

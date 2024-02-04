@@ -2,7 +2,7 @@ use std::{f64::consts::PI, rc::Rc, cell::RefCell};
 
 use nalgebra_glm::DVec2;
 
-use crate::util::normalize_angle;
+use crate::util::normalize_angle_0_to_2pi;
 
 use self::{orbit_point::OrbitPoint, orbit_direction::OrbitDirection, conic::{Conic, new_conic}, conic_type::ConicType};
 
@@ -14,6 +14,7 @@ pub mod orbit_direction;
 mod orbit_point;
 mod scary_math;
 
+#[derive(Debug)]
 pub struct Orbit {
     parent: Rc<RefCell<Object>>,
     conic: Box<dyn Conic>,
@@ -50,8 +51,8 @@ impl Orbit {
             return 2.0 * PI;
         }
 
-        let mut end_theta = normalize_angle(self.end_point.get_theta());
-        let current_theta = normalize_angle(self.current_point.get_theta());
+        let mut end_theta = normalize_angle_0_to_2pi(self.end_point.get_theta());
+        let current_theta = normalize_angle_0_to_2pi(self.current_point.get_theta());
         if let OrbitDirection::AntiClockwise = self.conic.get_direction() {
             if end_theta < current_theta {
                 end_theta += 2.0 * PI;

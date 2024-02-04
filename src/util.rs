@@ -39,7 +39,7 @@ pub fn format_time(time: f64) -> String {
     }
 }
 
-pub fn normalize_angle(mut theta: f64) -> f64 {
+pub fn normalize_angle_0_to_2pi(mut theta: f64) -> f64 {
     theta = theta % (2.0 * PI);
     (theta + 2.0 * PI) % (2.0 * PI)
 }

@@ -1,0 +1,1 @@
+[{"encounter_type":"Entrance","object":"spacecraft","new_parent":"earth","time":507240.0},{"encounter_type":"Entrance","object":"spacecraft","new_parent":"moon","time":773520.0},{"encounter_type":"Exit","object":"spacecraft","new_parent":"earth","time":804840.0},{"encounter_type":"Exit","object":"spacecraft","new_parent":"sun","time":1240800.0}]
