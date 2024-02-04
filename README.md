@@ -1,4 +1,5 @@
 # Patched Conic Planner 2D
+![Screenshot of the program](screenshot.png)
 ### What is it?
 This is a simple tool for plotting spacecraft trajectories using patched conics in 2D. This is a tool that I threw together fairly quickly and it does not have tests or documentation, and the code quality isn't great overall - not my proudest work. The intended use is as a quick-and-dirty tool for computing trajectories, in my case for testing and benchmarking potentially more efficient approaches to computing these trajectories (this tool uses a brute force approach to finding encounters, which takes a long time to execute).
 
