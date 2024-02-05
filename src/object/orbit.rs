@@ -44,7 +44,6 @@ impl Orbit {
         &self.end_point
     }
 
-    //TODO - add this to main project
     pub fn get_remaining_angle(&self) -> f64 {
         // If we have any full orbits remaining, only return up to 2pi
         if self.get_remaining_orbits() > 0 {
