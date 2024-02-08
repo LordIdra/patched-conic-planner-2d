@@ -122,7 +122,10 @@ impl Object {
         if let Some(orbits) = self.get_orbits_mut() {
             orbits.back_mut().unwrap().update(delta_time);
             if orbits.back().unwrap().is_finished() {
+                let previous_end_time = orbits.back().unwrap().get_current_point().get_time();
                 orbits.pop_back();
+                let overshot_time = previous_end_time - orbits.back().unwrap().get_current_point().get_time();
+                orbits.back_mut().unwrap().update(overshot_time);
             }
         }
     }
@@ -131,7 +134,10 @@ impl Object {
         if let Some(orbits) = self.get_orbits_mut() {
             orbits.front_mut().unwrap().update(delta_time);
             if orbits.front().unwrap().is_finished() {
+                let previous_end_time = orbits.front().unwrap().get_current_point().get_time();
                 orbits.pop_front();
+                let overshot_time = previous_end_time - orbits.front().unwrap().get_current_point().get_time();
+                orbits.front_mut().unwrap().update(overshot_time);
             }
         }
     }

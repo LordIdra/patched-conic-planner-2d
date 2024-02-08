@@ -122,7 +122,7 @@ pub fn solve(name: &String, metadata: &CaseMetadata) -> Vec<Encounter> {
         time += metadata.get_time_step();
         for object in &objects {
             if let Some(orbits) = object.borrow_mut().get_orbits_mut() {
-                orbits.front_mut().unwrap().end_at(time + metadata.get_time_step());
+                orbits.front_mut().unwrap().end_at(time);
             }
             object.borrow_mut().update_front(metadata.get_time_step());
         }
