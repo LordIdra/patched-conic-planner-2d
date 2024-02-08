@@ -4,7 +4,7 @@ use nalgebra_glm::DVec2;
 
 use crate::util::normalize_angle_0_to_2pi;
 
-use self::{orbit_point::OrbitPoint, orbit_direction::OrbitDirection, conic::{Conic, new_conic}, conic_type::ConicType};
+use self::{orbit_point::OrbitPoint, orbit_direction::OrbitDirection, conic::{Conic, new_conic}};
 
 use super::Object;
 
@@ -68,14 +68,6 @@ impl Orbit {
         self.conic.get_orbits(self.end_point.get_time() - self.current_point.get_time())
     }
 
-    pub fn get_completed_orbits(&self) -> i32 {
-        self.conic.get_orbits(self.current_point.get_time() - self.start_point.get_time())
-    }
-
-    pub fn get_conic_type(&self) -> ConicType {
-        self.conic.get_type()
-    }
-
     pub fn get_parent(&self) -> Rc<RefCell<Object>> {
         self.parent.clone()
     }
@@ -84,48 +76,8 @@ impl Orbit {
         self.conic.get_semi_major_axis()
     }
 
-    pub fn get_semi_minor_axis(&self) -> f64 {
-        self.conic.get_semi_minor_axis()
-    }
-
-    pub fn get_eccentricity(&self) -> f64 {
-        self.conic.get_eccentricity()
-    }
-
-    pub fn get_argument_of_periapsis(&self) -> f64 {
-        self.conic.get_argument_of_periapsis()
-    }
-
-    pub fn get_direction(&self) -> OrbitDirection {
-        self.conic.get_direction()
-    }
-
-    pub fn get_period(&self) -> Option<f64> {
-        self.conic.get_period()
-    }
-
     pub fn is_finished(&self) -> bool {
         self.current_point.is_after(&self.end_point)
-    }
-
-    pub fn is_time_within_orbit(&self, time: f64) -> bool {
-        self.conic.is_time_between_points(&self.current_point, &self.end_point, time)
-    }
-
-    pub fn get_overshot_time(&self, time: f64) -> f64 {
-        time - self.end_point.get_time()
-    }
-
-    pub fn get_time_since_first_periapsis(&self, theta: f64) -> f64 {
-        let mut x = self.get_time_since_last_periapsis(theta);
-        if let Some(period) = self.get_period() {
-            x += period * self.get_completed_orbits() as f64;
-        }
-        x
-    }
-
-    pub fn get_time_since_last_periapsis(&self, theta: f64) -> f64 {
-        self.conic.get_time_since_last_periapsis(theta)
     }
 
     pub fn get_first_periapsis_time(&self) -> f64 {
@@ -149,10 +101,6 @@ impl Orbit {
         let theta = self.get_theta_from_time(time);
         let position = self.get_position_from_theta(theta);
         self.end_point = OrbitPoint::new(&*self.conic, position, time);
-    }
-
-    pub fn reset(&mut self) {
-        self.current_point = self.start_point.clone();
     }
 
     pub fn update(&mut self, delta_time: f64) {
