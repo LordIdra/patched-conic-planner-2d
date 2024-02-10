@@ -1,0 +1,28 @@
+{
+    "sun": {
+        "orbitable": true,
+        "mass": 1.989e30,
+        "position": [0.0, 0.0]
+    },
+    "earth": {
+        "orbitable": true,
+        "mass": 5.972e24,
+        "position": [1.521e11, 0.0],
+        "velocity": [0.0, -2.929e4],
+        "parent_name": "sun"
+    },
+    "moon": {
+        "orbitable": true,
+        "mass": 7.348e22,
+        "position": [0.0, 0.1055e9],
+        "velocity": [1.870e3, 0.0],
+        "parent_name": "earth"
+    },
+    "spacecraft": {
+        "orbitable": false,
+        "mass": 300,
+        "position": [0.0105e9, 0.0],
+        "velocity": [0.0, 8.350e3],
+        "parent_name": "earth"
+    }
+}
