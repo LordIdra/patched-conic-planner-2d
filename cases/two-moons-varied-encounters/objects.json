@@ -22,14 +22,14 @@
         "orbitable": true,
         "mass": 7.548e22,
         "position": [0.0, 0.3055e9],
-        "velocity": [1.20e3, 0.0],
+        "velocity": [1.10e3, 0.0],
         "parent_name": "earth"
     },
     "spacecraft": {
         "orbitable": false,
         "mass": 300,
         "position": [-0.405e9, 0.0],
-        "velocity": [0.0, -0.970e3],
+        "velocity": [0.0, -0.870e3],
         "parent_name": "earth"
     }
 }
