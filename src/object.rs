@@ -147,12 +147,6 @@ impl Object {
     pub fn update_front(&mut self, delta_time: f64) {
         if let Some(orbits) = self.get_orbits_mut() {
             orbits.front_mut().unwrap().update(delta_time);
-            if orbits.front().unwrap().is_finished() {
-                let previous_end_time = orbits.front().unwrap().get_current_point().get_time();
-                orbits.pop_front();
-                let overshot_time = previous_end_time - orbits.front().unwrap().get_current_point().get_time();
-                orbits.front_mut().unwrap().update(overshot_time);
-            }
         }
     }
 }

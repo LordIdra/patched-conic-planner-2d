@@ -71,9 +71,8 @@ pub fn solve(name: &String, metadata: &CaseMetadata) -> Vec<Encounter> {
             }
             encounters.push(encounter);
         }
-
+        
         time += metadata.get_time_step();
-
         step_time(&objects, time, metadata.get_time_step());
     }
     encounters
