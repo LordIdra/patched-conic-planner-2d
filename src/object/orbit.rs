@@ -40,6 +40,10 @@ impl Orbit {
         &self.current_point
     }
 
+    pub fn get_next_point(&self, time_step: f64) -> OrbitPoint {
+        self.current_point.next(&*self.conic, time_step)
+    }
+
     pub fn get_end_point(&self) -> &OrbitPoint {
         &self.end_point
     }

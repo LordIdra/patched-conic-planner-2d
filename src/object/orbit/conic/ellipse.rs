@@ -2,7 +2,7 @@ use std::f64::consts::PI;
 
 use nalgebra_glm::{vec2, DVec2};
 
-use crate::object::orbit::{orbit_direction::OrbitDirection, scary_math::{period, argument_of_periapsis, specific_angular_momentum, solve_kepler_equation_ellipse}, conic_type::ConicType, orbit_point::OrbitPoint};
+use crate::object::orbit::{conic_type::ConicType, orbit_direction::OrbitDirection, orbit_point::OrbitPoint, scary_math::{argument_of_periapsis, period, solve_kepler_equation_ellipse, specific_angular_momentum}};
 
 use super::Conic;
 

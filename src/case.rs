@@ -3,7 +3,7 @@ use std::{cell::RefCell, collections::HashMap, fs, io, rc::Rc};
 use nalgebra_glm::DVec2;
 use serde::{Deserialize, Serialize};
 
-use crate::{object::Object, solver::Encounter};
+use crate::{object::Object, solver::encounter::Encounter};
 
 #[derive(Deserialize, Serialize)]
 struct ObjectData {

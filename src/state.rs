@@ -4,7 +4,7 @@ use clap::Parser;
 use eframe::{CreationContext, egui::{CentralPanel, Context, Key, Painter, SidePanel}, Frame, epaint::{Shape, Pos2, Color32, Rect, pos2}, emath::RectTransform};
 use nalgebra_glm::DVec2;
 
-use crate::{case::{load_case_encounters, load_case_metadata, load_case_objects, save_case_encounters, CaseMetadata}, constants::{LINES_PER_ORBIT, LINE_WIDTH, OBJECT_RADIUS}, object::Object, solver::{solve, Encounter, EncounterType}, util::format_time};
+use crate::{case::{load_case_encounters, load_case_metadata, load_case_objects, save_case_encounters, CaseMetadata}, constants::{LINES_PER_ORBIT, LINE_WIDTH, OBJECT_RADIUS}, object::Object, solver::{encounter::{Encounter, EncounterType}, solve}, util::format_time};
 
 fn dvec2_to_pos2(x: DVec2) -> Pos2 {
     // the simulation takes y as up, but the painter takes y as dwown (lol)

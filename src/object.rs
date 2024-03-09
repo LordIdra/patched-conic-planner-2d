@@ -80,10 +80,24 @@ impl Object {
         }
     }
 
+    pub fn get_next_position(&self, time_step: f64) -> DVec2 {
+        match &self.physics_type {
+            PhysicsType::Stationary(position) => position.clone(),
+            PhysicsType::Orbit(orbits) => orbits.front().unwrap().get_next_point(time_step).get_position(),
+        }
+    }
+
     pub fn get_final_velocity(&self) -> DVec2 {
         match &self.physics_type {
             PhysicsType::Stationary(_) => DVec2::new(0.0, 0.0),
             PhysicsType::Orbit(orbits) => orbits.front().unwrap().get_current_point().get_velocity(),
+        }
+    }
+
+    pub fn get_next_velocity(&self, time_step: f64) -> DVec2 {
+        match &self.physics_type {
+            PhysicsType::Stationary(position) => position.clone(),
+            PhysicsType::Orbit(orbits) => orbits.front().unwrap().get_next_point(time_step).get_velocity(),
         }
     }
 

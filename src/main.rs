@@ -1,6 +1,7 @@
 use eframe::{NativeOptions, Renderer, run_native, CreationContext};
 use state::State;
 
+mod bisection;
 mod case;
 mod constants;
 mod object;
