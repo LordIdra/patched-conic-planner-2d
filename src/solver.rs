@@ -14,18 +14,18 @@ fn get_object_from_name(objects: &Vec<Rc<RefCell<Object>>>, name: &String) -> Rc
 }
 
 fn do_entrance(object: Rc<RefCell<Object>>, new_parent: Rc<RefCell<Object>>, time: f64) {
-    let new_position = object.borrow().get_final_position() 
-        - new_parent.borrow().get_final_position();
-    let new_velocity = object.borrow().get_final_velocity() 
-        - new_parent.borrow().get_final_velocity();
+    let new_position = object.borrow().get_end_position() 
+        - new_parent.borrow().get_end_position();
+    let new_velocity = object.borrow().get_end_velocity() 
+        - new_parent.borrow().get_end_velocity();
     object.borrow_mut().change_parent(new_parent, new_position, new_velocity, time);
 }
 
 fn do_exit(object: Rc<RefCell<Object>>, new_parent: Rc<RefCell<Object>>, time: f64) {
-    let new_position = object.borrow().get_final_position() 
-        + object.borrow().get_final_parent().unwrap().borrow().get_final_position();
-    let new_velocity = object.borrow().get_final_velocity() 
-        + object.borrow().get_final_parent().unwrap().borrow().get_final_velocity();
+    let new_position = object.borrow().get_end_position() 
+        + object.borrow().get_final_parent().unwrap().borrow().get_end_position();
+    let new_velocity = object.borrow().get_end_velocity() 
+        + object.borrow().get_final_parent().unwrap().borrow().get_end_velocity();
     object.borrow_mut().change_parent(new_parent, new_position, new_velocity, time);
 }
 

@@ -46,7 +46,11 @@ impl Conic for Ellipse {
     }
     /// Always returns a positive time
     fn get_time_since_last_periapsis(&self, theta: f64) -> f64 {
-        let true_anomaly = theta - self.argument_of_periapsis;
+        let mut true_anomaly = theta - self.argument_of_periapsis;
+        // Solve an edge case where if true_anomaly is very close to 0 or pi, it will spit out inaccurate results due to the tan
+        if true_anomaly.abs() < 1.0e-6 || (true_anomaly.abs() - PI).abs() < 1.0e-4 {
+            true_anomaly += 1.0e-4
+        }
         let eccentric_anomaly = 2.0 * f64::atan(f64::sqrt((1.0 - self.eccentricity) / (1.0 + self.eccentricity)) * f64::tan(true_anomaly / 2.0));
         let mut mean_anomaly = eccentric_anomaly - self.eccentricity * f64::sin(eccentric_anomaly);
         if let OrbitDirection::Clockwise = self.direction {

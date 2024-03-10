@@ -1,4 +1,4 @@
-const BISECTION_ITERATIONS: usize = 12;
+const BISECTION_ITERATIONS: usize = 24;
 
 pub fn bisection(function: &impl Fn(f64) -> f64, min: f64, max: f64) -> f64 {
     let mut low = min;

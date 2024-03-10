@@ -1,0 +1,49 @@
+{
+    "sun": {
+        "orbitable": true,
+        "mass": 1.989e30,
+        "position": [0.0, 0.0]
+    },
+    "earth": {
+        "orbitable": true,
+        "mass": 5.972e24,
+        "position": [1.521e11, 0.0],
+        "velocity": [0.0, -2.929e4],
+        "parent_name": "sun"
+    },
+    "moon-1": {
+        "orbitable": true,
+        "mass": 7.348e22,
+        "position": [0.0, 0.1055e9],
+        "velocity": [1.870e3, 0.0],
+        "parent_name": "earth"
+    },
+    "moon-2": {
+        "orbitable": true,
+        "mass": 10.348e22,
+        "position": [-0.15e9, 0.1055e9],
+        "velocity": [1.870e3, 0.0],
+        "parent_name": "earth"
+    },
+    "moon-3": {
+        "orbitable": true,
+        "mass": 10.348e22,
+        "position": [0.2e9, 0.2055e9],
+        "velocity": [-1.070e3, 0.0],
+        "parent_name": "earth"
+    },
+    "moon-4": {
+        "orbitable": true,
+        "mass": 10.348e22,
+        "position": [0.05e9, 0.055e9],
+        "velocity": [-2.070e3, 0.0],
+        "parent_name": "earth"
+    },
+    "spacecraft": {
+        "orbitable": false,
+        "mass": 300,
+        "position": [0.0105e9, 0.0],
+        "velocity": [0.0, 8.350e3],
+        "parent_name": "earth"
+    }
+}

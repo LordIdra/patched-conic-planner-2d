@@ -111,11 +111,29 @@ impl eframe::App for State {
         self.last_frame_time = Instant::now();
         self.simulation_state.update(simulated_delta_time);
 
-        SidePanel::left("main").show(context, |ui| {
+        SidePanel::left("main").exact_width(200.0).show(context, |ui| {
             ui.label(format!("{} FPS", f64::round(1.0 / delta_time)));
+            ui.label(format!("Raw time: {}", self.simulation_state.get_time()));
             ui.label(format!("Time: {}", format_time(self.simulation_state.get_time())));
             ui.label(format!("End: {}", format_time(self.simulation_state.get_metadata().get_end_time())));
             ui.label(format!("Solver step: {}", format_time(self.simulation_state.get_metadata().get_time_step())));
+
+            let parent = self.focus.borrow().get_current_parent().unwrap();
+            for object in self.simulation_state.get_objects() {
+                if object.as_ptr() == self.focus.as_ptr() {
+                    continue;
+                }
+                if let Some(object_parent) = object.borrow().get_current_parent() {
+                    if object_parent.as_ptr() != parent.as_ptr() {
+                        continue;
+                    }
+                }
+                if let Some(soi) = object.borrow().get_soi() {
+                    let distance = (self.focus.borrow().get_current_position() - object.borrow().get_current_position()).magnitude();
+                    let distance_to_soi = distance - soi;
+                    ui.label(format!("Distance to {} SOI: {}", object.borrow().get_name(), distance_to_soi));
+                }
+            }
 
             if ui.button("Refresh").clicked() {
                 self.reload();

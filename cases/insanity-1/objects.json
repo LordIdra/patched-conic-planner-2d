@@ -21,7 +21,7 @@
     "spacecraft": {
         "orbitable": false,
         "mass": 300,
-        "position": [0.0104e9, 0.0],
+        "position": [0.01041e9, 0.0],
         "velocity": [0.0, 8.250e3],
         "parent_name": "earth"
     }
