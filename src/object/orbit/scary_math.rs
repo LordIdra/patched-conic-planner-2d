@@ -52,7 +52,7 @@ pub fn solve_kepler_equation_ellipse(eccentricity: f64, mean_anomaly: f64, start
     let mut attempts = 0;
     loop {
         let delta = -(eccentric_anomaly - eccentricity * f64::sin(eccentric_anomaly) - mean_anomaly) / (1.0 - eccentricity * f64::cos(eccentric_anomaly));
-        if delta < max_delta {
+        if delta.abs() < max_delta {
             break;
         }
         if attempts > max_attempts {

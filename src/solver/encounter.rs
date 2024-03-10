@@ -74,7 +74,7 @@ pub fn get_exit(object: &Rc<RefCell<Object>>, time: f64, time_step: f64) -> Opti
     let parent = object.borrow().get_final_parent()?;
     let parent_parent_name = parent.borrow().get_final_parent()?.borrow().get_name();
     let soi = parent.borrow().get_soi()?;
-    let distance = object.borrow().get_final_position().magnitude();
+    let distance = object.borrow().get_next_position(time_step).magnitude();
     if distance <= soi {
         return None;
     }
@@ -84,6 +84,8 @@ pub fn get_exit(object: &Rc<RefCell<Object>>, time: f64, time_step: f64) -> Opti
         distance - soi
     };
 
+    
     let encounter_time = time + bisection(&sdf, 0.0, time_step);
+
     Some(Encounter::new_exit(object.borrow().get_name(), parent_parent_name, encounter_time))
 }

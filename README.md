@@ -7,7 +7,7 @@ This is a simple tool for plotting spacecraft trajectories using patched conics 
 1) `git clone https://github.com/LordIdra/patched-conic-planner-2d`
 2) `cd patched-conic-planner-2d`
 3) `cargo build --profile release`
-4) `./target/release/patched-conic-planner-2d --name <NAME>`
+4) `./target/release/patched-conic-planner-2d --name <NAME>` or use `./target/release/patched-conic-planner-2d --recompute-all` to recompute all
 NAME indicates the name of a case to run (cases can be found under the cases directory). For example, `./target/release/patched-conic-planner-2d --name many-moon-encounters`
 Use the left and right arrow keys to speed up / slow down time
 
