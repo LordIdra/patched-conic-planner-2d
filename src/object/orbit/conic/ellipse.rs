@@ -2,7 +2,7 @@ use std::f64::consts::PI;
 
 use nalgebra_glm::{vec2, DVec2};
 
-use crate::object::orbit::{conic_type::ConicType, orbit_direction::OrbitDirection, orbit_point::OrbitPoint, scary_math::{argument_of_periapsis, period, solve_kepler_equation_ellipse, specific_angular_momentum}};
+use crate::object::orbit::{conic_type::ConicType, orbit_direction::OrbitDirection, orbit_point::OrbitPoint, scary_math::{argument_of_periapsis, kepler_ellipse::solve_kepler_equation_ellipse, period, specific_angular_momentum}};
 
 use super::Conic;
 
@@ -29,7 +29,7 @@ impl Conic for Ellipse {
     fn get_theta_from_time_since_periapsis(&self, time_since_periapsis: f64) -> f64 {
         let time_since_periapsis = time_since_periapsis % self.period;
         let mean_anomaly = 2.0 * PI * time_since_periapsis / self.period;
-        let eccentric_anomaly = solve_kepler_equation_ellipse(self.eccentricity, mean_anomaly, 0.0, 0);
+        let eccentric_anomaly = solve_kepler_equation_ellipse(self.eccentricity, mean_anomaly);
         let mut true_anomaly = 2.0 * f64::atan(f64::sqrt((1.0 + self.eccentricity) / (1.0 - self.eccentricity)) * f64::tan(eccentric_anomaly / 2.0));
         // The sign of atan flips halfway through the orbit
         // So we need to add 2pi halfway through the orbit to keep things consistent

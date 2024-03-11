@@ -1,9 +1,9 @@
 use std::f64::consts::PI;
 
 use nalgebra_glm::{DVec2, vec2};
-use rand::Rng;
 
-use crate::constants::MAX_KEPLER_SOLVER_RECURSIONS;
+pub mod kepler_ellipse;
+pub mod kepler_hyperbola;
 
 // https://phys.libretexts.org/Bookshelves/Astronomy__Cosmology/Celestial_Mechanics_(Tatum)/09%3A_The_Two_Body_Problem_in_Two_Dimensions/9.08%3A_Orbital_Elements_and_Velocity_Vector#mjx-eqn-9.5.31
 // https://orbital-mechanics.space/time-since-periapsis-and-keplers-equation/elliptical-orbits.html
@@ -34,64 +34,6 @@ pub fn specific_angular_momentum(position: DVec2, velocity: DVec2) -> f64 {
 
 pub fn period(standard_gravitational_parameter: f64, semi_major_axis: f64) -> f64 {
     2.0 * PI * f64::sqrt(semi_major_axis.powi(3) / standard_gravitational_parameter)
-}
-
-/// This is already tested in the conic tests
-//TODO switch this out for laguerre
-pub fn solve_kepler_equation_ellipse(eccentricity: f64, mean_anomaly: f64, start_offset: f64, recursions: usize) -> f64 {
-    if recursions > MAX_KEPLER_SOLVER_RECURSIONS {
-        panic!("Exceeded max recursions solving elliptic Kepler equation with e:{}, mean_anomaly:{}", eccentricity, mean_anomaly);
-    }
-    let max_delta = 1.0e-9_f64;
-    let max_attempts = 500;
-    // Choosing an initial seed: https://www.aanda.org/articles/aa/full_html/2022/02/aa41423-21/aa41423-21.html#S5
-    // Yes, they're actually serious about that 0.999999 thing (lmao)
-    let mut eccentric_anomaly = mean_anomaly + start_offset
-        + (0.999999 * 4.0 * eccentricity * mean_anomaly * (PI - mean_anomaly))
-        / (8.0 * eccentricity * mean_anomaly + 4.0 * eccentricity * (eccentricity - PI) + PI.powi(2));
-    let mut attempts = 0;
-    loop {
-        let delta = -(eccentric_anomaly - eccentricity * f64::sin(eccentric_anomaly) - mean_anomaly) / (1.0 - eccentricity * f64::cos(eccentric_anomaly));
-        if delta.abs() < max_delta {
-            break;
-        }
-        if attempts > max_attempts {
-            // Try with different start value
-            let mut rng = rand::thread_rng();
-            let start_offset = (rng.gen::<f64>() - 0.5) * 5.0;
-            return solve_kepler_equation_ellipse(eccentricity, mean_anomaly, start_offset, recursions + 1)
-        }
-        eccentric_anomaly += delta;
-        attempts += 1;
-    }
-    eccentric_anomaly
-}
-
-/// This is already tested in the conic tests
-//TODO switch this out for laguerre
-pub fn solve_kepler_equation_hyperbola(eccentricity: f64, mean_anomaly: f64, start_offset: f64, recursions: usize) -> f64 {
-    if recursions > MAX_KEPLER_SOLVER_RECURSIONS {
-        panic!("Exceeded max recursions solving hyperbolic Kepler equation with e:{}, mean_anomaly:{}", eccentricity, mean_anomaly);
-    }
-    let max_delta = 1.0e-9_f64;
-    let max_attempts = 500;
-    let mut eccentric_anomaly = mean_anomaly + start_offset;
-    let mut attempts = 0;
-    for _ in 0..1000 {
-        let delta = -(eccentricity * f64::sinh(eccentric_anomaly) - eccentric_anomaly - mean_anomaly) / (eccentricity * f64::cosh(eccentric_anomaly) - 1.0);
-        if delta.abs() < max_delta {
-            break;
-        }
-        if attempts > max_attempts {
-            // Try with different start value
-            let mut rng = rand::thread_rng();
-            let start_offset = (rng.gen::<f64>() - 0.5) * 5.0;
-            return solve_kepler_equation_hyperbola(eccentricity, mean_anomaly, start_offset, recursions + 1)
-        }
-        eccentric_anomaly += delta;
-        attempts += 1;
-    }
-    eccentric_anomaly
 }
 
 #[cfg(test)]

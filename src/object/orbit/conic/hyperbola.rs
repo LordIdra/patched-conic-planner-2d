@@ -2,7 +2,7 @@ use std::f64::consts::PI;
 
 use nalgebra_glm::{vec2, DVec2};
 
-use crate::object::orbit::{orbit_direction::OrbitDirection, scary_math::{argument_of_periapsis, specific_angular_momentum, solve_kepler_equation_hyperbola}, orbit_point::OrbitPoint, conic_type::ConicType};
+use crate::object::orbit::{conic_type::ConicType, orbit_direction::OrbitDirection, orbit_point::OrbitPoint, scary_math::{argument_of_periapsis, kepler_hyperbola::solve_kepler_equation_hyperbola, specific_angular_momentum}};
 
 use super::Conic;
 
@@ -28,7 +28,7 @@ impl Conic for Hyperbola {
     fn get_theta_from_time_since_periapsis(&self, time_since_periapsis: f64) -> f64 {
         let x = self.standard_gravitational_parameter.powi(2) / self.specific_angular_momentum.powi(3);
         let mean_anomaly = x * time_since_periapsis * (self.eccentricity.powi(2) - 1.0).powf(3.0 / 2.0);
-        let eccentric_anomaly = solve_kepler_equation_hyperbola(self.eccentricity, mean_anomaly, 0.0, 0);
+        let eccentric_anomaly = solve_kepler_equation_hyperbola(self.eccentricity, mean_anomaly);
         let true_anomaly = 2.0 * f64::atan(f64::sqrt((self.eccentricity + 1.0) / (self.eccentricity - 1.0)) * f64::tanh(eccentric_anomaly / 2.0));
         let theta = true_anomaly + self.argument_of_periapsis;
         let theta = theta % (2.0 * PI);
