@@ -20,7 +20,7 @@ fn laguerre_iteration(mean_anomaly: f64, eccentricity: f64, eccentric_anomaly: f
 
 /// This is already tested in the conic tests
 pub fn solve_kepler_equation_hyperbola(eccentricity: f64, mean_anomaly: f64) -> f64 {
-    let mut eccentric_anomaly = mean_anomaly;
+    let mut eccentric_anomaly = mean_anomaly.abs();
 
     // Iteration using laguerre method
     // According to this 1985 paper laguerre should practially always converge (they tested it 500,000 times on different values)
@@ -32,5 +32,5 @@ pub fn solve_kepler_equation_hyperbola(eccentricity: f64, mean_anomaly: f64) -> 
     }
     println!("{}", eccentric_anomaly);
     exit(0);
-    eccentric_anomaly
+    eccentric_anomaly * mean_anomaly.signum()
 }
