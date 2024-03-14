@@ -1868,6 +1868,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "eframe",
+ "lazy_static",
  "nalgebra-glm",
  "rand",
  "serde",
