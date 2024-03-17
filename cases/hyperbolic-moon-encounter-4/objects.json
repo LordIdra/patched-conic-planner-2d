@@ -29,7 +29,7 @@
         "orbitable": false,
         "mass": 300,
         "position": [0.105e9, 0.0],
-        "velocity": [0.0, -3.871e3],
+        "velocity": [0.0, 1.871e3],
         "parent_name": "earth"
     }
 }

@@ -21,15 +21,15 @@
     "minmus": {
         "orbitable": true,
         "mass": 7.548e22,
-        "position": [0.0, -0.2055e9],
-        "velocity": [1.10e3, 0.0],
+        "position": [0.0, -0.005e9],
+        "velocity": [1.232e4, 0.0],
         "parent_name": "earth"
     },
     "spacecraft": {
         "orbitable": false,
         "mass": 300,
-        "position": [0.105e9, 0.0],
-        "velocity": [0.0, -3.871e3],
+        "position": [-0.12e9, 0.105e9],
+        "velocity": [3.871e3, 0.0],
         "parent_name": "earth"
     }
 }
