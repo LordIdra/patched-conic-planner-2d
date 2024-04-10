@@ -73,6 +73,13 @@ impl Object {
         }
     }
 
+    pub fn get_current_theta(&self) -> Option<f64> {
+        match &self.physics_type {
+            PhysicsType::Stationary(_) => None,
+            PhysicsType::Orbit(orbits) => Some(orbits.back().unwrap().get_current_point().get_theta()),
+        }
+    }
+
     pub fn get_end_position(&self) -> DVec2 {
         match &self.physics_type {
             PhysicsType::Stationary(position) => position.clone(),

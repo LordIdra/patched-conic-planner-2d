@@ -117,6 +117,9 @@ impl eframe::App for State {
             ui.label(format!("Time: {}", format_time(self.simulation_state.get_time())));
             ui.label(format!("End: {}", format_time(self.simulation_state.get_metadata().get_end_time())));
             ui.label(format!("Solver step: {}", format_time(self.simulation_state.get_metadata().get_time_step())));
+            if let Some(theta) = self.focus.borrow().get_current_theta() {
+                ui.label(format!("Focus theta: {}", theta));
+            }
 
             let parent = self.focus.borrow().get_current_parent().unwrap();
             for object in self.simulation_state.get_objects() {

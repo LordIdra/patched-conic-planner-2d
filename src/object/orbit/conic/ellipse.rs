@@ -6,6 +6,11 @@ use crate::object::orbit::{conic_type::ConicType, orbit_direction::OrbitDirectio
 
 use super::Conic;
 
+pub fn normalize_angle(mut theta: f64) -> f64 {
+    theta %= 2.0 * PI;
+    (theta + 2.0 * PI) % (2.0 * PI)
+}
+
 #[derive(Debug)]
 pub struct Ellipse {
     semi_major_axis: f64,
@@ -48,19 +53,13 @@ impl Conic for Ellipse {
     }
     /// Always returns a positive time
     fn get_time_since_last_periapsis(&self, theta: f64) -> f64 {
-        let mut true_anomaly = theta - self.argument_of_periapsis;
-        // Solve an edge case where if true_anomaly is very close to 0 or pi, it will spit out inaccurate results due to the tan
-        if true_anomaly.abs() < 1.0e-6 || (true_anomaly.abs() - PI).abs() < 1.0e-4 {
-            true_anomaly += 1.0e-4
-        }
+        let true_anomaly = theta - self.argument_of_periapsis;
         let eccentric_anomaly = 2.0 * f64::atan(f64::sqrt((1.0 - self.eccentricity) / (1.0 + self.eccentricity)) * f64::tan(true_anomaly / 2.0));
         let mut mean_anomaly = eccentric_anomaly - self.eccentricity * f64::sin(eccentric_anomaly);
         if let OrbitDirection::Clockwise = self.direction {
             mean_anomaly = -mean_anomaly;
         }
-        if mean_anomaly.is_sign_negative() {
-            mean_anomaly += 2.0 * PI;
-        }
+        mean_anomaly = normalize_angle(mean_anomaly);
         mean_anomaly * self.period / (2.0 * PI)
     }
 
